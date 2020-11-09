@@ -31,11 +31,9 @@ services:
       - jenkins-data:/var/lib/jenkins/
     depends_on:
       - nexus
-      - sonar
     environment:
       - NEXUS_PORT=8081
-      - SONAR_PORT=9000
-      - SONAR_DB_PORT=5432
+      
   gitlab:
    image: gitlab/gitlab-ce:latest
    restart: always
