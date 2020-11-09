@@ -1,0 +1,3 @@
+ARG NEXUS_VERSION
+
+FROM sonatype/nexus3:${NEXUS_VERSION}
