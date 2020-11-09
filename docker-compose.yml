@@ -7,19 +7,32 @@ networks:
 volumes:
   nexus-data:
   jenkins-data:
+  jenkins-docker-certs:
 
 services:
   nexus:
-    build: ./nexus
+    image: sonatype/nexus3:latest
     restart: always
     ports:
       - "18081:8081"
     networks:
       - sv
     volumes:
-      - nexus-data:/nexus-data
+      - nexus-data:/nexus-data      
+  jenkins-docker:
+    image: docker:dind
+    restart: always
+    ports:
+      - "2376:2376"
+    networks:
+      - sv
+    volumes:
+      - jenkins-data:/var/lib/jenkins/
+      - jenkins-docker-certs:/certs/client
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
   jenkins:
-    build: ./jenkins
+    image: jenkinsci/blueocean:latest
     restart: always
     ports:
       - "18080:8080"
@@ -29,10 +42,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - jenkins-data:/var/lib/jenkins/
+      - jenkins-docker-certs:/certs/client:ro
     depends_on:
       - nexus
     environment:
       - NEXUS_PORT=8081
+      - DOCKER_HOST=tcp://sv:2376
+      - DOCKER_CERT_PATH=/certs/clien
+      - DOCKER_TLS_VERIFY=1
       
   gitlab:
    image: gitlab/gitlab-ce:latest
