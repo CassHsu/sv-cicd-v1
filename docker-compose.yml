@@ -21,6 +21,7 @@ services:
       - nexus-data:/nexus-data      
   jenkins-docker:
     image: docker:dind
+    privileged: true
     restart: always
     ports:
       - "2376:2376"
@@ -45,9 +46,10 @@ services:
       - jenkins-docker-certs:/certs/client:ro
     depends_on:
       - nexus
+      - jenkins-docker
     environment:
       - NEXUS_PORT=8081
-      - DOCKER_HOST=tcp://sv:2376
+      - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/clien
       - DOCKER_TLS_VERIFY=1
       
