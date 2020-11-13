@@ -8,6 +8,9 @@ volumes:
   nexus-data:
   jenkins-data:
   jenkins-docker-certs:
+  gitlab:
+  gitlab-logs:
+  gitlab-data:
 
 services:
   nexus:
@@ -68,6 +71,6 @@ services:
      - "10443:443"
      #- "10022:22"
    volumes:
-     - /opt/gitlab/config:/etc/gitlab
-     - /opt/gitlab/logs:/var/log/gitlab
-     - /opt/gitlab/data:/var/opt/gitlab
+     - gitlab:/etc/gitlab
+     - gitlab-logs:/var/log/gitlab
+     - gitlab-data:/var/opt/gitlab
