@@ -30,7 +30,9 @@ services:
     ports:
       - "2376:2376"
     networks:
-      - sv
+      sv:
+        aliases:
+          - docker
     volumes:
       - jenkins-data:/var/lib/jenkins/
       - jenkins-docker-certs:/certs/client
