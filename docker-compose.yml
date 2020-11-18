@@ -25,6 +25,7 @@ services:
       - nexus-data:/nexus-data      
   jenkins-docker:
     image: docker:dind
+    command: "--insecure-registry=192.168.1.107:5000"
     privileged: true
     restart: always
     ports:
